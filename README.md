@@ -221,6 +221,12 @@ This project is provided for educational and research purposes. Use at your own 
 
 ---
 
+## Demo Video
+
+[Watch / Download Demo](https://drive.google.com/file/d/1IzQ_SQcyNCJzU4HvRGS5z7mS3rH24-hY/view?usp=sharing)
+
+---
+
 ## Acknowledgements
 
 - Built with [yfinance](https://github.com/ranaroussi/yfinance), [Flask](https://flask.palletsprojects.com/), [pandas](https://pandas.pydata.org/), and [NumPy](https://numpy.org/).

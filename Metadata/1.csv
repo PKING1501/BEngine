@@ -1,0 +1,61 @@
+No.,Symbol,Company Name,Market Cap,Stock Price,% Change,Revenue
+1,NVDA,NVIDIA Corporation,4.07T,167.52
+2,AAPL,Apple Inc.,3.65T,248.80
+3,GOOGL,Alphabet Inc.,3.32T,274.34
+4,MSFT,Microsoft Corporation,2.65T,356.77
+5,AMZN,"Amazon.com, Inc.",2.14T,199.34
+6,TSM,Taiwan Semiconductor Manufacturing Company Limited,1.69T,326.74
+7,AMX,"AmÃ©rica MÃ³vil, S.A.B. de C.V.",1.50T,24.81
+8,AVGO,Broadcom Inc.,1.42T,300.68
+9,TSLA,"Tesla, Inc.",1.36T,361.83
+10,META,"Meta Platforms, Inc.",1.33T,525.72
+11,BRK.B,Berkshire Hathaway Inc.,1.02T,468.49
+12,WMT,Walmart Inc.,979.73B,122.89
+13,LLY,Eli Lilly and Company,784.58B,878.24
+14,JPM,JPMorgan Chase & Co.,762.83B,282.84
+15,XOM,Exxon Mobil Corporation,712.47B,170.99
+16,AZN,AstraZeneca PLC,584.46B,188.42
+17,JNJ,Johnson & Johnson,579.46B,240.45
+18,V,Visa Inc.,563.26B,295.52
+19,ASML,ASML Holding N.V.,501.99B,"1,302.47"
+20,COST,Costco Wholesale Corporation,436.49B,983.86
+21,MA,Mastercard Incorporated,431.85B,484.24
+22,CVX,Chevron Corporation,421.33B,211.15
+23,ORCL,Oracle Corporation,401.67B,139.66
+24,MU,"Micron Technology, Inc.",400.97B,357.22
+25,NFLX,"Netflix, Inc.",394.48B,93.43
+26,ABBV,AbbVie Inc.,370.25B,209.40
+27,PLTR,Palantir Technologies Inc.,342.15B,143.06
+28,BAC,Bank of America Corporation,337.09B,46.97
+29,PG,The Procter & Gamble Company,333.48B,142.71
+30,AMD,"Advanced Micro Devices, Inc.",329.33B,201.99
+31,TM,Toyota Motor Corporation,326.53B,206.73
+32,KO,The Coca-Cola Company,325.61B,75.71
+33,CAT,Caterpillar Inc.,323.56B,695.40
+34,HD,"The Home Depot, Inc.",320.37B,321.65
+35,CSCO,"Cisco Systems, Inc.",315.68B,79.92
+36,GE,GE Aerospace,296.61B,282.81
+37,MRK,"Merck & Co., Inc.",295.77B,119.63
+38,BABA,Alibaba Group Holding Limited,292.91B,122.69
+39,NVS,Novartis AG,282.75B,148.18
+40,HSBC,HSBC Holdings plc,272.02B,79.19
+41,SHEL,Shell plc,271.48B,92.17
+42,AMAT,"Applied Materials, Inc.",267.38B,337.17
+43,LRCX,Lam Research Corporation,264.00B,211.41
+44,RTX,RTX Corporation,254.65B,189.71
+45,PM,Philip Morris International Inc.,254.58B,163.54
+46,MS,Morgan Stanley,251.50B,158.39
+47,GS,"The Goldman Sachs Group, Inc.",238.26B,802.89
+48,WFC,Wells Fargo & Company,238.18B,77.19
+49,UNH,UnitedHealth Group Incorporated,235.11B,259.02
+50,TMUS,"T-Mobile US, Inc.",232.29B,210.82
+51,GEV,GE Vernova Inc.,229.95B,853.16
+52,LIN,Linde plc,227.58B,491.12
+53,RY,Royal Bank of Canada,223.90B,158.21
+54,IBM,International Business Machines Corporation,221.70B,236.34
+55,MCD,McDonald's Corporation,217.31B,305.90
+56,INTC,Intel Corporation,215.39B,43.13
+57,VZ,Verizon Communications Inc.,212.19B,50.31
+58,PEP,"PepsiCo, Inc.",209.15B,153.04
+59,T,AT&T Inc.,203.72B,29.10
+60,AXP,American Express Company,200.68B,292.27

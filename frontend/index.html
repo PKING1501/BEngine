@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>QUANT FORGE — Alpha Backtesting Engine</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.1/plotly.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Outfit:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════════════════════════════════════════════════════
+   DESIGN TOKENS
+══════════════════════════════════════════════════════════ */
+:root {
+  --bg-void:       #050507;
+  --bg-surface:    #0a0a0f;
+  --bg-panel:      #0e0e16;
+  --bg-card:       #12121d;
+  --bg-input:      #16161f;
+  --border-dim:    rgba(255,255,255,0.06);
+  --border-glow:   rgba(180,130,255,0.25);
+
+  --gold:          #f5c842;
+  --gold-dim:      #a88520;
+  --gold-glow:     rgba(245,200,66,0.15);
+  --cyan:          #00e5ff;
+  --cyan-dim:      #007a8a;
+  --cyan-glow:     rgba(0,229,255,0.12);
+  --purple:        #b97fff;
+  --purple-dim:    #6b3fa0;
+  --purple-glow:   rgba(185,127,255,0.15);
+  --red:           #ff4466;
+  --green:         #00e5a0;
+
+  --text-primary:  #f0f0f8;
+  --text-secondary:#9090aa;
+  --text-muted:    #505068;
+
+  --font-display:  'Outfit', sans-serif;
+  --font-mono:     'Share Tech Mono', monospace;
+
+  --radius-sm:  6px;
+  --radius-md:  10px;
+  --radius-lg:  16px;
+  --radius-xl:  22px;
+
+  --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+  --orange:       #ffb561;
+  --orange-dim:   #b87a2f;
+  --orange-glow:  rgba(255,181,97,0.15);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-void);
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(185,127,255,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 110%, rgba(0,229,255,0.05) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 30% at 50% 50%, rgba(245,200,66,0.02) 0%, transparent 50%);
+  pointer-events: none; z-index: 0;
+}
+
+/* ══════════════════════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════════════════════ */
+header {
+  position: relative; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 40px;
+  border-bottom: 1px solid var(--border-dim);
+  background: rgba(10,10,15,0.85);
+  backdrop-filter: blur(20px);
+}
+
+.logo-block { display: flex; align-items: center; gap: 14px; }
+
+.logo-icon {
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, var(--gold), var(--purple));
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 0 20px rgba(245,200,66,0.3);
+}
+
+.logo-text {
+  font-size: 20px; font-weight: 900; letter-spacing: 0.12em;
+  background: linear-gradient(90deg, var(--gold), var(--purple));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+.logo-sub {
+  font-size: 10px; font-family: var(--font-mono);
+  color: var(--text-muted); letter-spacing: 0.2em; margin-top: 1px;
+}
+
+.header-badges { display: flex; gap: 10px; align-items: center; }
+
+.badge {
+  font-family: var(--font-mono); font-size: 10px;
+  padding: 4px 10px; border-radius: 20px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+
+.badge-v1 {
+  background: rgba(245,200,66,0.1);
+  border: 1px solid rgba(245,200,66,0.3);
+  color: var(--gold);
+}
+
+.badge-live {
+  background: rgba(0,229,160,0.1);
+  border: 1px solid rgba(0,229,160,0.3);
+  color: var(--green);
+  display: flex; align-items: center; gap: 5px;
+}
+
+.badge-live::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green); animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,229,160,0.4); }
+  50%       { opacity: 0.7; box-shadow: 0 0 0 4px rgba(0,229,160,0); }
+}
+
+/* ══════════════════════════════════════════════════════════
+   MAIN LAYOUT
+══════════════════════════════════════════════════════════ */
+main {
+  position: relative; z-index: 1;
+  max-width: 1600px; margin: 0 auto;
+  padding: 32px 40px;
+  display: grid;
+  grid-template-columns: 390px 1fr;
+  gap: 24px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   CONTROL PANEL (LEFT COLUMN)
+══════════════════════════════════════════════════════════ */
+.control-panel {
+  grid-column: 1;
+  display: flex; flex-direction: column; gap: 16px;
+}
+
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-dim);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  transition: border-color var(--transition);
+}
+
+.panel:hover { border-color: var(--border-glow); }
+
+.panel-label {
+  font-size: 10px; font-family: var(--font-mono);
+  color: var(--text-muted); letter-spacing: 0.25em;
+  text-transform: uppercase; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+.panel-label::before {
+  content: ''; width: 16px; height: 1px;
+  background: currentColor; opacity: 0.5;
+}
+
+/* ── Alpha Editor ── */
+.alpha-textarea {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1px solid var(--border-dim);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  color: var(--cyan);
+  font-family: var(--font-mono); font-size: 13px;
+  line-height: 1.6; resize: vertical; min-height: 80px;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  letter-spacing: 0.02em;
+}
+
+.alpha-textarea:focus {
+  border-color: rgba(0,229,255,0.4);
+  box-shadow: 0 0 0 3px rgba(0,229,255,0.06), inset 0 0 20px rgba(0,229,255,0.03);
+}
+
+.alpha-textarea::placeholder { color: var(--text-muted); }
+
+/* ── Preset selector ── */
+.preset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 10px; }
+
+.preset-btn {
+  background: var(--bg-input);
+  border: 1px solid var(--border-dim);
+  border-radius: var(--radius-sm);
+  padding: 7px 10px;
+  color: var(--text-secondary);
+  font-family: var(--font-mono); font-size: 10px;
+  cursor: pointer; text-align: left;
+  transition: all var(--transition); line-height: 1.3;
+}
+
+.preset-btn:hover {
+  border-color: rgba(185,127,255,0.4);
+  color: var(--purple); background: rgba(185,127,255,0.05);
+}
+
+.preset-btn.active {
+  border-color: var(--purple); color: var(--purple);
+  background: rgba(185,127,255,0.1);
+}
+
+/* ── Form controls ── */
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+
+.form-group label {
+  font-size: 10px; font-family: var(--font-mono);
+  color: var(--text-muted); letter-spacing: 0.15em; text-transform: uppercase;
+}
+
+.form-input, .form-select {
+  background: var(--bg-input);
+  border: 1px solid var(--border-dim);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  color: var(--text-primary);
+  font-family: var(--font-mono); font-size: 12px;
+  outline: none;
+  transition: border-color var(--transition);
+  width: 100%;
+}
+
+.form-select {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23505068'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 28px;
+}
+
+.form-input:focus, .form-select:focus { border-color: rgba(245,200,66,0.4); }
+
+.form-select option { background: var(--bg-card); color: var(--text-primary); }
+
+/* ── Toggle + Stop-Loss row ── */
+.toggle-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-dim);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition);
+}
+
+.toggle-row.active { border-color: rgba(245,200,66,0.35); }
+
+.toggle-label {
+  font-size: 10px; font-family: var(--font-mono);
+  color: var(--text-muted); letter-spacing: 0.12em;
+  text-transform: uppercase; flex: 1;
+}
+
+.toggle-switch {
+  position: relative; width: 36px; height: 20px; flex-shrink: 0;
+}
+
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+
+.toggle-track {
+  position: absolute; inset: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-dim);
+  border-radius: 20px; cursor: pointer;
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.toggle-track::after {
+  content: '';
+  position: absolute; top: 2px; left: 2px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--text-muted);
+  transition: transform var(--transition), background var(--transition);
+}
+
+.toggle-switch input:checked + .toggle-track {
+  background: rgba(245,200,66,0.15);
+  border-color: rgba(245,200,66,0.4);
+}
+
+.toggle-switch input:checked + .toggle-track::after {
+  transform: translateX(16px);
+  background: var(--gold);
+}
+
+.stop-input-wrap {
+  display: none; align-items: center; gap: 6px;
+}
+
+.stop-input-wrap.visible { display: flex; }
+
+.stop-pct-input {
+  background: var(--bg-card);
+  border: 1px solid rgba(245,200,66,0.25);
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
+  color: var(--gold);
+  font-family: var(--font-mono); font-size: 12px;
+  outline: none; width: 72px;
+  transition: border-color var(--transition);
+}
+
+.stop-pct-input:focus { border-color: rgba(245,200,66,0.6); }
+
+.stop-pct-suffix {
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--text-muted);
+}
+
+/* ── Section divider ── */
+.param-section {
+  margin-top: 12px; padding-top: 12px;
+  border-top: 1px solid var(--border-dim);
+}
+
+.param-section-label {
+  font-size: 9px; font-family: var(--font-mono);
+  color: var(--text-muted); letter-spacing: 0.2em;
+  text-transform: uppercase; margin-bottom: 10px;
+}
+
+/* ── Run button ── */
+.run-btn {
+  width: 100%; padding: 14px;
+  background: linear-gradient(135deg, #1a1408, #1a0a20);
+  border: 1px solid;
+  border-image: linear-gradient(135deg, var(--gold), var(--purple)) 1;
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: var(--font-display); font-size: 14px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer;
+  position: relative; overflow: hidden;
+  transition: all var(--transition);
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+
+.run-btn::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(245,200,66,0.08), rgba(185,127,255,0.08));
+  opacity: 0; transition: opacity var(--transition);
+}
+
+.run-btn:hover::before { opacity: 1; }
+.run-btn:hover {
+  box-shadow: 0 0 30px rgba(245,200,66,0.15), 0 0 60px rgba(185,127,255,0.1);
+  transform: translateY(-1px);
+}
+.run-btn:active { transform: translateY(0); }
+.run-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.run-icon { font-size: 16px; }
+
+/* ── Spinner ── */
+.spinner {
+  display: none; width: 16px; height: 16px;
+  border: 2px solid rgba(245,200,66,0.2);
+  border-top-color: var(--gold); border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Operator reference ── */
+.op-grid { display: flex; flex-wrap: wrap; gap: 5px; }
+
+.op-tag {
+  background: rgba(0,229,255,0.06);
+  border: 1px solid rgba(0,229,255,0.15);
+  border-radius: 4px; padding: 3px 8px;
+  font-family: var(--font-mono); font-size: 10px;
+  color: rgba(0,229,255,0.7); cursor: pointer;
+  transition: all var(--transition);
+}
+
+.op-tag:hover {
+  background: rgba(0,229,255,0.12);
+  border-color: rgba(0,229,255,0.35); color: var(--cyan);
+}
+
+/* ══════════════════════════════════════════════════════════
+   RESULTS (RIGHT COLUMN)
+══════════════════════════════════════════════════════════ */
+.results-panel { grid-column: 2; display: flex; flex-direction: column; gap: 20px; }
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+.metric-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-dim);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  transition: all var(--transition);
+  position: relative; overflow: hidden;
+}
+
+.metric-card::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+  height: 2px; background: var(--accent-color, var(--gold));
+  opacity: 0.5; transform: scaleX(0);
+  transition: transform var(--transition); transform-origin: left;
+}
+
+.metric-card:hover::after { transform: scaleX(1); }
+.metric-card:hover { border-color: var(--border-glow); transform: translateY(-2px); }
+
+.metric-label {
+  font-size: 9px; font-family: var(--font-mono);
+  color: var(--text-muted); letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.metric-value { font-size: 22px; font-weight: 700; font-family: var(--font-display); line-height: 1; }
+
+.positive { color: var(--green); }
+.negative { color: var(--red); }
+.neutral  { color: var(--gold); }
+.info     { color: var(--cyan); }
+.accent   { color: var(--purple); }
+
+/* ── Charts ── */
+.charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.chart-wide  { grid-column: 1 / -1; }
+
+.chart-panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-dim);
+  border-radius: var(--radius-lg); padding: 20px;
+  transition: border-color var(--transition);
+}
+
+.chart-panel:hover { border-color: var(--border-glow); }
+
+.chart-title {
+  font-size: 11px; font-family: var(--font-mono);
+  color: var(--text-secondary); letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 14px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.chart-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 8px; }
+.dot-gold   { background: var(--gold); box-shadow: 0 0 6px var(--gold); }
+.dot-cyan   { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+.dot-purple { background: var(--purple); box-shadow: 0 0 6px var(--purple); }
+.dot-red    { background: var(--red); box-shadow: 0 0 6px var(--red); }
+.dot-green  { background: var(--green); box-shadow: 0 0 6px var(--green); }
+.dot-orange { background: var(--orange); box-shadow: 0 0 6px var(--orange); }
+
+.ai-panel{
+  box-shadow: 0 0 10px var(--orange), 0 0 20px var(--orange-glow);
+}
+
+.plotly-chart { width: 100%; }
+
+/* ── Empty / error states ── */
+.empty-state {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 16px; padding: 80px 40px;
+  background: var(--bg-panel);
+  border: 1px dashed var(--border-dim);
+  border-radius: var(--radius-xl); text-align: center;
+}
+
+.empty-icon { font-size: 48px; opacity: 0.3; }
+.empty-title { font-size: 18px; font-weight: 600; color: var(--text-secondary); }
+.empty-sub { font-size: 13px; color: var(--text-muted); max-width: 340px; line-height: 1.6; }
+
+.error-banner {
+  display: none;
+  background: rgba(255,68,102,0.07);
+  border: 1px solid rgba(255,68,102,0.25);
+  border-radius: var(--radius-md);
+  padding: 14px 18px; color: var(--red);
+  font-family: var(--font-mono); font-size: 12px; line-height: 1.6;
+}
+
+/* ── Loading overlay ── */
+.loading-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(5,5,7,0.7); backdrop-filter: blur(8px);
+  z-index: 100; flex-direction: column;
+  align-items: center; justify-content: center; gap: 20px;
+}
+.loading-overlay.active { display: flex; }
+
+.loading-ring {
+  width: 60px; height: 60px;
+  border: 3px solid rgba(245,200,66,0.15);
+  border-top-color: var(--gold); border-right-color: var(--purple);
+  border-radius: 50%; animation: spin 1s linear infinite;
+}
+
+.loading-text {
+  font-family: var(--font-mono); font-size: 13px;
+  color: var(--text-secondary); letter-spacing: 0.15em;
+  animation: flicker 2s ease-in-out infinite;
+}
+
+.loading-sub {
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--text-muted); letter-spacing: 0.1em;
+  max-width: 300px; text-align: center; line-height: 1.6;
+}
+
+@keyframes flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+/* ── Meta footer ── */
+.meta-row {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-dim);
+  border-radius: var(--radius-md);
+}
+
+.meta-item {
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--text-muted); letter-spacing: 0.1em;
+}
+.meta-item span { color: var(--text-secondary); }
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-void); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+@media (max-width: 1100px) {
+  main { grid-template-columns: 1fr; }
+  .control-panel, .results-panel { grid-column: 1; }
+  .charts-grid { grid-template-columns: 1fr; }
+  .chart-wide  { grid-column: 1; }
+}
+
+@media (max-width: 600px) {
+  header { padding: 14px 20px; }
+  main   { padding: 16px 20px; gap: 16px; }
+  .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.fade-in { animation: fadeIn 0.4s ease forwards; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ══════════════════════════════════════════════════════════
+   TOUR
+══════════════════════════════════════════════════════════ */
+#tourOverlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 300;
+  pointer-events: none;
+}
+#tourOverlay.active { display: block; }
+
+/* Four dark rectangles that together create a "hole" around the target.
+   No blur, no backdrop-filter — the target element is fully crisp and visible. */
+.tour-shade {
+  position: absolute;
+  background: rgba(5,5,7,0.80);
+  pointer-events: all;
+  transition: opacity 0.2s ease;
+}
+
+/* Gold border ring drawn over the target */
+#tourRing {
+  position: absolute;
+  border: 2px solid var(--gold);
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px rgba(245,200,66,0.2), 0 0 20px rgba(245,200,66,0.3);
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+#tourCard {
+  position: absolute;
+  width: 320px;
+  background: var(--bg-card);
+  border: 1px solid rgba(245,200,66,0.35);
+  border-radius: var(--radius-lg);
+  padding: 22px 24px 18px;
+  pointer-events: all;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.7), 0 0 24px rgba(245,200,66,0.08);
+  transition: opacity 0.2s ease;
+  z-index: 301;
+}
+
+.tour-step-badge {
+  font-family: var(--font-mono); font-size: 9px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold-dim); margin-bottom: 8px;
+}
+.tour-title {
+  font-size: 15px; font-weight: 700;
+  color: var(--text-primary); margin-bottom: 8px; line-height: 1.3;
+}
+.tour-body {
+  font-size: 12px; color: var(--text-secondary);
+  line-height: 1.65; font-family: var(--font-mono); margin-bottom: 18px;
+}
+.tour-body code {
+  color: var(--cyan); background: rgba(0,229,255,0.07);
+  border-radius: 4px; padding: 1px 5px; font-size: 11px;
+}
+.tour-controls { display: flex; align-items: center; gap: 10px; }
+
+.tour-btn {
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 7px 16px; border-radius: var(--radius-sm);
+  cursor: pointer; border: 1px solid; transition: all var(--transition);
+}
+.tour-btn-primary {
+  background: linear-gradient(135deg, rgba(245,200,66,0.12), rgba(185,127,255,0.08));
+  border-color: rgba(245,200,66,0.4); color: var(--gold);
+}
+.tour-btn-primary:hover {
+  background: linear-gradient(135deg, rgba(245,200,66,0.22), rgba(185,127,255,0.15));
+  box-shadow: 0 0 16px rgba(245,200,66,0.2);
+}
+.tour-btn-secondary {
+  background: transparent;
+  border-color: var(--border-dim); color: var(--text-muted);
+}
+.tour-btn-secondary:hover { border-color: var(--border-glow); color: var(--text-secondary); }
+.tour-btn-secondary:disabled { opacity: 0.3; cursor: default; pointer-events: none; }
+
+.tour-progress { margin-left: auto; display: flex; gap: 5px; align-items: center; }
+.tour-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border-dim); transition: background 0.2s; }
+.tour-dot.active { background: var(--gold); }
+.tour-dot.done   { background: rgba(245,200,66,0.3); }
+
+.tour-launch-btn {
+  font-family: var(--font-mono); font-size: 10px;
+  padding: 4px 12px; border-radius: 20px;
+  border: 1px solid var(--border-dim);
+  background: transparent; color: var(--text-muted);
+  cursor: pointer; letter-spacing: 0.1em; text-transform: uppercase;
+  transition: all var(--transition);
+}
+.tour-launch-btn:hover { border-color: rgba(245,200,66,0.4); color: var(--gold); }
+</style>
+</head>
+
+<body>
+
+<!-- Loading overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-ring"></div>
+  <div class="loading-text">RUNNING BACKTEST</div>
+  <div class="loading-sub" id="loadingMsg">Fetching market data and evaluating alpha expression…</div>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="logo-block">
+    <div class="logo-icon">⚗</div>
+    <div>
+      <div class="logo-text">QUANT FORGE</div>
+      <div class="logo-sub">Alpha Backtesting Engine · V5</div>
+    </div>
+  </div>
+  <div class="header-badges">
+    <span class="badge badge-v1">V 5.0</span>
+    <span class="badge badge-live">LIVE DATA</span>
+    <button class="tour-launch-btn" onclick="startTour()">? Guide</button>
+  </div>
+</header>
+
+<!-- Main layout -->
+<main>
+
+  <!-- ══ LEFT: Control Panel ══ -->
+  <aside class="control-panel">
+
+    <!-- Alpha expression -->
+    <div class="panel">
+      <div class="panel-label">Alpha Expression</div>
+      <div class="alpha-editor">
+        <textarea
+          class="alpha-textarea"
+          id="alphaExpr"
+          rows="3"
+          placeholder="-1 * rank(delta(close, 5))"
+          spellcheck="false"
+        >-1 * rank(delta(close, 5))</textarea>
+      </div>
+      <div style="margin-top:12px">
+        <div class="panel-label" style="margin-bottom:8px">Presets</div>
+        <div class="preset-grid" id="presetGrid"></div>
+      </div>
+    </div>
+
+    <!-- Parameters -->
+    <div class="panel">
+      <div class="panel-label">Backtest Parameters</div>
+
+      <!-- ─── Date range ─── -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>Start Date</label>
+          <input class="form-input" type="date" id="startDate" value="2006-01-01"/>
+        </div>
+        <div class="form-group">
+          <label>End Date</label>
+          <input class="form-input" type="date" id="endDate" value="2018-12-31"/>
+        </div>
+      </div>
+
+      <!-- ─── T-Cost / Max Weight ─── -->
+      <div class="form-row" style="margin-top:10px">
+        <div class="form-group">
+          <label>T-Cost (bps)</label>
+          <input class="form-input" type="number" id="tcostBps" value="10" min="0" max="100" step="1"/>
+        </div>
+        <div class="form-group">
+          <label>Max Weight</label>
+          <input class="form-input" type="number" id="maxWeight" value="0.10" min="0.01" max="0.5" step="0.01"/>
+        </div>
+      </div>
+
+      <!-- ─── Universe ─── -->
+      <div class="param-section">
+        <div class="param-section-label">Universe</div>
+        <div class="form-group">
+          <label>Stock Universe</label>
+          <select class="form-input" id="universe">
+            <option value="TOPSP500" selected>TOPSP500 — S&amp;P 500 (~503 stocks)</option>
+            <option value="TOP200">TOP200 — Top 200 by Market Cap</option>
+            <option value="TOP500">TOP500 — Alias for SP500</option>
+            <option value="TOP1000">TOP1000 — Top 1000 by Market Cap</option>
+            <option value="TOP3000">TOP3000 — Top 3000 by Market Cap</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ─── Neutralisation ─── -->
+      <div class="param-section">
+        <div class="param-section-label">Alpha Neutralisation</div>
+        <div class="form-group">
+          <label>Neutralisation Method</label>
+          <select class="form-input" id="neutralisation">
+            <option value="none" selected>None — No neutralisation</option>
+            <option value="market">Market — Dollar neutral (demean all)</option>
+            <option value="sector">Sector — GICS Sector neutral</option>
+            <option value="industry">Industry — GICS Sub-Industry neutral</option>
+            <option value="subindustry">SubIndustry — Alias for Industry</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ─── Trailing Stop-Loss ─── -->
+      <!-- <div class="param-section">
+        <div class="param-section-label">Risk Controls</div>
+        <div class="form-group">
+          <label>Trailing Stop-Loss</label>
+          <div class="toggle-row" id="stopToggleRow">
+            <span class="toggle-label">Enable trailing stop</span>
+            <div class="stop-input-wrap" id="stopInputWrap">
+              <input class="stop-pct-input" type="number" id="stopPct"
+                     value="5" min="0.1" max="50" step="0.1" placeholder="5"/>
+              <span class="stop-pct-suffix">%</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="stopToggle" onchange="onStopToggle()"/>
+              <span class="toggle-track"></span>
+            </label>
+          </div>
+        </div>
+      </div> -->
+
+    </div>
+
+    <!-- Run button -->
+    <button class="run-btn" id="runBtn" onclick="runBacktest()">
+      <span class="run-icon">▶</span>
+      <span id="runLabel">RUN BACKTEST</span>
+      <div class="spinner" id="spinner"></div>
+    </button>
+
+    <!-- Error banner -->
+    <div class="error-banner" id="errorBanner"></div>
+
+    <!-- Operator reference -->
+    <div class="panel">
+      <div class="panel-label">Operator Reference</div>
+      <div class="op-grid" id="opGrid"></div>
+    </div>
+
+  </aside>
+
+  <!-- ══ RIGHT: Results Panel ══ -->
+  <section class="results-panel" id="resultsPanel">
+    <div class="empty-state" id="emptyState">
+      <div class="empty-icon">◈</div>
+      <div class="empty-title">No backtest run yet</div>
+      <div class="empty-sub">
+        Write or select an alpha expression on the left, configure your parameters, then hit <strong>RUN BACKTEST</strong>.
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ══ TOUR OVERLAY ══ -->
+<div id="tourOverlay">
+  <!-- Four shade panels forming a hole around the target -->
+  <div class="tour-shade" id="shadeTop"></div>
+  <div class="tour-shade" id="shadeBottom"></div>
+  <div class="tour-shade" id="shadeLeft"></div>
+  <div class="tour-shade" id="shadeRight"></div>
+  <!-- Gold ring around the target -->
+  <div id="tourRing"></div>
+  <!-- Tooltip card -->
+  <div id="tourCard">
+    <div class="tour-step-badge" id="tourBadge">Step 1 of 8</div>
+    <div class="tour-title"      id="tourTitle"></div>
+    <div class="tour-body"       id="tourBody"></div>
+    <div class="tour-controls">
+      <button class="tour-btn tour-btn-secondary" id="tourPrev" onclick="tourNav(-1)">← Back</button>
+      <button class="tour-btn tour-btn-primary"   id="tourNext" onclick="tourNav(1)">Next →</button>
+      <div class="tour-progress" id="tourProgress"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════════════════
+//  TOUR  —  two bugs fixed:
+//  1. No backdrop-filter blur: four shade panels create the dark surround
+//     while the highlighted element stays fully crisp and visible.
+//  2. Proper scroll: scrollIntoView with 'center' block, then wait for
+//     scroll to settle before computing card position.
+// ══════════════════════════════════════════════════════════════════════════
+
+const TOUR_STEPS = [
+  {
+    target: null,
+    title:  'Welcome to Quant Forge',
+    body:   'This 8-step tour walks you through the entire platform.\n\nQuant Forge lets you write and backtest systematic trading strategies (alphas) on real US equity data — directly in the browser, no code required.',
+  },
+  {
+    target: '#alphaExpr',
+    title:  'Alpha Expression Editor',
+    body:   'Write your trading signal here as a formula.\n\nExamples:\n<code>-1 * rank(delta(close, 1))</code>  1-day reversal\n<code>rank(delta(close, 20))</code>  momentum\n\nPositive weight = LONG that stock. Negative weight = SHORT. Weights are normalised automatically to sum to zero.',
+  },
+  {
+    target: '#presetGrid',
+    title:  'Preset Alphas',
+    body:   'Click any preset to load a ready-made alpha into the editor.\n\nStart with <code>1-Day Reversal</code> — it reliably produces positive Sharpe on US large-cap equities.\n\nThe <code>★ Lookahead Oracle</code> uses future data and is for pipeline testing only.',
+  },
+  {
+    target: '#opGrid',
+    title:  'Operator Reference',
+    body:   'Every available operator is shown here. Click a tag to insert it at your cursor.\n\n<code>ts_*</code> operators work per stock across time (rolling window).\n<code>rank</code>, <code>zscore</code>, <code>neutralize</code> work across stocks on each day.\n\nOnly these operators are valid — the engine rejects anything else.',
+  },
+  {
+    target: '#startDate',
+    title:  'Backtest Parameters',
+    body:   '<code>Start / End Date</code> — backtest window. Default covers 2006–2018 (pre/post GFC + bull run).\n<code>T-Cost (bps)</code> — one-way transaction cost. 10 bps = 0.10% per trade.\n<code>Max Weight</code> — max fraction of the portfolio in any single stock (position limit).',
+  },
+  {
+    target: '#universe',
+    title:  'Universe Selection',
+    body:   'Choose which stocks to trade:\n\n<code>TOPSP500</code>  S&P 500 (~503 stocks) — best for liquidity\n<code>TOP200</code>   Mega-caps only — tightest spreads\n<code>TOP1000</code>  Broader exposure, more signal diversity\n<code>TOP3000</code>  Includes small-caps, higher costs\n\nLarger universes give more cross-sectional power but slower first download.',
+  },
+  {
+    target: '#neutralisation',
+    title:  'Alpha Neutralisation',
+    body:   'Removes unwanted systematic bias from weights before simulation.\n\n<code>None</code>      Raw weights — may have market direction\n<code>Market</code>    Dollar-neutral: long notional equals short notional\n<code>Sector</code>    Neutral within each GICS sector\n<code>Industry</code>  Neutral within each GICS sub-industry\n\nUse <code>Market</code> neutralisation to cleanly isolate the alpha signal.',
+  },
+  {
+    target: '#runBtn',
+    title:  'Run Backtest',
+    body:   'Click <code>RUN BACKTEST</code> or press <code>Ctrl+Enter</code>.\n\nThe engine will:\n1. Fetch OHLCV data (cached after first run)\n2. Evaluate your alpha across all stocks and dates\n3. Simulate the long/short portfolio with transaction costs\n4. Compute 13 performance metrics + 6 interactive charts\n5. Generate AI feedback via Gemini\n\nFirst run ~30–60s while data downloads. Subsequent runs are instant.',
+  },
+];
+
+let tourStep = 0;
+
+function startTour() {
+  tourStep = 0;
+  document.getElementById('tourOverlay').classList.add('active');
+  renderTourStep();
+}
+
+function closeTour() {
+  document.getElementById('tourOverlay').classList.remove('active');
+  // Restore shade panels off-screen
+  ['shadeTop','shadeBottom','shadeLeft','shadeRight'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.style.opacity = '0'; }
+  });
+  localStorage.setItem('qf_tour_seen', '1');
+}
+
+function tourNav(dir) {
+  tourStep += dir;
+  if (tourStep < 0) { tourStep = 0; return; }
+  if (tourStep >= TOUR_STEPS.length) { closeTour(); return; }
+  renderTourStep();
+}
+
+function renderTourStep() {
+  const step   = TOUR_STEPS[tourStep];
+  const isLast = tourStep === TOUR_STEPS.length - 1;
+
+  // ── Text ──────────────────────────────────────────────────────────────
+  document.getElementById('tourBadge').textContent = `Step ${tourStep + 1} of ${TOUR_STEPS.length}`;
+  document.getElementById('tourTitle').textContent  = step.title;
+  document.getElementById('tourBody').innerHTML     = step.body.replace(/\n/g, '<br>');
+  document.getElementById('tourNext').textContent   = isLast ? 'Finish ✓' : 'Next →';
+  document.getElementById('tourPrev').disabled      = tourStep === 0;
+
+  // ── Progress dots ─────────────────────────────────────────────────────
+  const prog = document.getElementById('tourProgress');
+  prog.innerHTML = '';
+  TOUR_STEPS.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'tour-dot' + (i === tourStep ? ' active' : i < tourStep ? ' done' : '');
+    prog.appendChild(d);
+  });
+
+  // ── Welcome step: no target, centre card, hide shading ────────────────
+  if (!step.target) {
+    setShades(null);
+    document.getElementById('tourRing').style.cssText = 'display:none';
+    const card = document.getElementById('tourCard');
+    card.style.top       = '50%';
+    card.style.left      = '50%';
+    card.style.transform = 'translate(-50%, -50%)';
+    return;
+  }
+
+  const el = document.querySelector(step.target);
+  if (!el) { closeTour(); return; }
+
+  // ── Scroll the target into view, then position after scroll fully settles ──
+  // Hide ring/shades instantly while repositioning to avoid ghost artifacts
+  document.getElementById('tourRing').style.opacity = '0';
+  ['shadeTop','shadeBottom','shadeLeft','shadeRight'].forEach(id => {
+    const s = document.getElementById(id);
+    if (s) s.style.opacity = '0';
+  });
+
+  el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+
+  // Use scrollend if available (modern browsers), else fall back to a generous
+  // timeout that accounts for post-results layout reflows (results panel can
+  // make the page significantly taller, slowing smooth scroll).
+  let settled = false;
+  function afterScroll() {
+    if (settled) return;
+    settled = true;
+    // Double rAF ensures the browser has fully painted the new layout
+    // before getBoundingClientRect() is called.
+    requestAnimationFrame(() => requestAnimationFrame(() => positionTour(el)));
+  }
+
+  // scrollend fires when smooth scroll completes
+  window.addEventListener('scrollend', afterScroll, { once: true });
+  // Fallback: if scrollend never fires (element already in view / browser
+  // doesn't support it), trigger after 600 ms (generous for long pages).
+  setTimeout(afterScroll, 600);
+}
+
+function positionTour(el) {
+  const pad  = 10;
+  const rect = el.getBoundingClientRect();
+  const vw   = window.innerWidth;
+  const vh   = window.innerHeight;
+
+  // ── Four shading panels (top / bottom / left / right of the hole) ─────
+  setShades(rect, pad);
+
+  // ── Gold ring ─────────────────────────────────────────────────────────
+  const ring = document.getElementById('tourRing');
+  ring.style.cssText = `
+    display: block;
+    opacity: 0;
+    top:    ${rect.top    - pad}px;
+    left:   ${rect.left   - pad}px;
+    width:  ${rect.width  + pad * 2}px;
+    height: ${rect.height + pad * 2}px;
+  `;
+
+  // ── Tooltip card position ─────────────────────────────────────────────
+  const card  = document.getElementById('tourCard');
+  card.style.transform = 'none';
+  const cardW = 326;
+
+  // Prefer: right of element
+  let left = rect.right + pad + 16;
+  let top  = rect.top;
+
+  // If overflows right → go left
+  if (left + cardW > vw - 16) {
+    left = rect.left - cardW - pad - 16;
+  }
+  // If overflows left too → place below, centred
+  if (left < 16) {
+    left = Math.max(16, rect.left + (rect.width / 2) - cardW / 2);
+    top  = rect.bottom + pad + 16;
+  }
+
+  // Clamp vertically inside the viewport
+  const cardH = card.offsetHeight || 280;
+  top = Math.max(16, Math.min(top, vh - cardH - 16));
+
+  card.style.top  = top  + 'px';
+  card.style.left = left + 'px';
+
+  // Fade everything in now that positions are correct
+  requestAnimationFrame(() => {
+    ring.style.opacity = '1';
+    ['shadeTop','shadeBottom','shadeLeft','shadeRight'].forEach(id => {
+      const s = document.getElementById(id);
+      if (s) s.style.opacity = '1';
+    });
+  });
+}
+
+function setShades(rect, pad) {
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  const top    = document.getElementById('shadeTop');
+  const bottom = document.getElementById('shadeBottom');
+  const left   = document.getElementById('shadeLeft');
+  const right  = document.getElementById('shadeRight');
+
+  if (!rect) {
+    // Welcome step: shade the whole screen
+    top.style.cssText    = `top:0;left:0;right:0;height:100vh;opacity:0`;
+    bottom.style.cssText = `display:none`;
+    left.style.cssText   = `display:none`;
+    right.style.cssText  = `display:none`;
+    requestAnimationFrame(() => { top.style.opacity = '1'; });
+    return;
+  }
+
+  const holeTop    = rect.top    - pad;
+  const holeLeft   = rect.left   - pad;
+  const holeRight  = rect.right  + pad;
+  const holeBottom = rect.bottom + pad;
+
+  top.style.cssText    = `display:block;opacity:0;top:0;left:0;right:0;height:${Math.max(0, holeTop)}px`;
+  bottom.style.cssText = `display:block;opacity:0;top:${holeBottom}px;left:0;right:0;bottom:0;height:${Math.max(0, vh - holeBottom)}px`;
+  left.style.cssText   = `display:block;opacity:0;top:${holeTop}px;left:0;width:${Math.max(0, holeLeft)}px;height:${holeBottom - holeTop}px`;
+  right.style.cssText  = `display:block;opacity:0;top:${holeTop}px;left:${holeRight}px;right:0;width:${Math.max(0, vw - holeRight)}px;height:${holeBottom - holeTop}px`;
+}
+
+// ── Close on clicking any shade panel ────────────────────────────────────
+['shadeTop','shadeBottom','shadeLeft','shadeRight'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('click', closeTour);
+});
+
+// ── Keyboard navigation ───────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('tourOverlay').classList.contains('active')) return;
+  if (e.key === 'ArrowRight' || e.key === 'Enter') { e.preventDefault(); tourNav(1);  }
+  if (e.key === 'ArrowLeft')                        { e.preventDefault(); tourNav(-1); }
+  if (e.key === 'Escape')                             closeTour();
+});
+
+// ── Auto-launch on first visit ────────────────────────────────────────────
+if (!localStorage.getItem('qf_tour_seen')) {
+  setTimeout(startTour, 800);
+}
+</script>
+
+<script>
+// ══════════════════════════════════════════════════════════════════════════
+//  PLOTLY THEME
+// ══════════════════════════════════════════════════════════════════════════
+const PLOTLY_LAYOUT_BASE = {
+  paper_bgcolor: 'transparent',
+  plot_bgcolor:  'transparent',
+  font: { family: "'Share Tech Mono', monospace", color: '#9090aa', size: 11 },
+  margin: { t: 10, r: 14, b: 40, l: 54 },
+  xaxis: {
+    gridcolor:     'rgba(255,255,255,0.04)',
+    linecolor:     'rgba(255,255,255,0.08)',
+    tickcolor:     'rgba(255,255,255,0.12)',
+    zerolinecolor: 'rgba(255,255,255,0.08)',
+  },
+  yaxis: {
+    gridcolor:     'rgba(255,255,255,0.04)',
+    linecolor:     'rgba(255,255,255,0.08)',
+    tickcolor:     'rgba(255,255,255,0.12)',
+    zerolinecolor: 'rgba(255,255,255,0.12)',
+  },
+  legend: { bgcolor: 'rgba(0,0,0,0)', bordercolor: 'rgba(255,255,255,0.08)', borderwidth: 1 },
+  autosize: true,
+  hovermode: 'x unified',
+  hoverlabel: {
+    bgcolor:     '#12121d',
+    bordercolor: 'rgba(185,127,255,0.4)',
+    font: { family: "'Share Tech Mono', monospace", color: '#f0f0f8', size: 11 },
+  },
+};
+
+const PLOTLY_CONFIG = {
+  responsive:             true,
+  displayModeBar:         true,
+  modeBarButtonsToRemove: ['select2d','lasso2d','autoScale2d','toImage'],
+  displaylogo:            false,
+};
+
+// ══════════════════════════════════════════════════════════════════════════
+//  OPERATORS + PRESETS
+// ══════════════════════════════════════════════════════════════════════════
+const OPERATORS = [
+  'rank','zscore','delta','ts_mean','ts_std','ts_min','ts_max',
+  'ts_rank','ts_zscore','delay','correlation','covariance',
+  'scale','neutralize','sign','log','abs','power'
+];
+
+let presetExpressions = {};
+
+function initOpGrid() {
+  const grid = document.getElementById('opGrid');
+  OPERATORS.forEach(op => {
+    const t = document.createElement('span');
+    t.className = 'op-tag';
+    t.textContent = op;
+    t.title = `Insert ${op}()`;
+    t.onclick = () => insertOperator(op);
+    grid.appendChild(t);
+  });
+}
+
+function insertOperator(op) {
+  const ta  = document.getElementById('alphaExpr');
+  const pos = ta.selectionStart;
+  const val = ta.value;
+  const ins = `${op}()`;
+  ta.value  = val.slice(0, pos) + ins + val.slice(pos);
+  ta.focus();
+  ta.setSelectionRange(pos + ins.length - 1, pos + ins.length - 1);
+}
+
+async function loadPresets() {
+  try {
+    const r = await fetch('/api/presets');
+    const d = await r.json();
+    presetExpressions = d.expressions || {};
+    renderPresets(Object.keys(presetExpressions));
+  } catch {
+    presetExpressions = {
+      'Mean Rev (5d)':    '-1 * rank(delta(close, 5))',
+      'Momentum (20d)':   'rank(delta(close, 20))',
+      'Vol Surge Rev':    '-1 * rank(delta(close, 1)) * rank(ts_mean(volume, 20))',
+      'Low Volatility':   '-1 * rank(ts_std(returns, 20))',
+      'Price Accel':      'rank(delta(close, 5) - delta(close, 10))',
+      'HiLo Breakout':    'rank(close - ts_min(low, 10)) - rank(ts_max(high, 10) - close)',
+    };
+    renderPresets(Object.keys(presetExpressions));
+  }
+}
+
+function renderPresets(names) {
+  const grid = document.getElementById('presetGrid');
+  grid.innerHTML = '';
+  names.forEach(name => {
+    const b = document.createElement('button');
+    b.className = 'preset-btn';
+    b.textContent = name;
+    b.onclick = () => {
+      document.querySelectorAll('.preset-btn').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      document.getElementById('alphaExpr').value = presetExpressions[name];
+    };
+    grid.appendChild(b);
+  });
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+//  TRAILING STOP TOGGLE
+// ══════════════════════════════════════════════════════════════════════════
+// function onStopToggle() {
+//   const on   = document.getElementById('stopToggle').checked;
+//   const wrap = document.getElementById('stopInputWrap');
+//   const row  = document.getElementById('stopToggleRow');
+//   wrap.classList.toggle('visible', on);
+//   row.classList.toggle('active', on);
+// }
+
+// ══════════════════════════════════════════════════════════════════════════
+//  RUN BACKTEST
+// ══════════════════════════════════════════════════════════════════════════
+async function runBacktest() {
+  const expr    = document.getElementById('alphaExpr').value.trim();
+  const start   = document.getElementById('startDate').value;
+  const end     = document.getElementById('endDate').value;
+  let tcostBps  = parseFloat(document.getElementById('tcostBps').value);
+  tcostBps      = isNaN(tcostBps) ? 10 : tcostBps;
+  let maxWeight = parseFloat(document.getElementById('maxWeight').value);
+  maxWeight     = isNaN(maxWeight) ? 0.10 : maxWeight;
+
+  // New params
+  const universe      = document.getElementById('universe').value;
+  const neutralisation = document.getElementById('neutralisation').value;
+  // const stopEnabled   = document.getElementById('stopToggle').checked;
+  // let trailingStop    = null;
+  // if (stopEnabled) {
+  //   const rawStop = parseFloat(document.getElementById('stopPct').value);
+  //   if (!isNaN(rawStop) && rawStop > 0) {
+  //     trailingStop = rawStop / 100;   // convert percent → decimal
+  //   }
+  // }
+
+  if (!expr) { showError('Please enter an alpha expression.'); return; }
+
+  setLoading(true);
+  hideError();
+
+  try {
+    const resp = await fetch('/api/run', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        expression:    expr,
+        start,
+        end,
+        tcost_bps:     tcostBps,
+        max_weight:    maxWeight,
+        universe,
+        neutralisation,
+        // trailing_stop: trailingStop,
+      }),
+    });
+
+    const data = await resp.json();
+
+    if (data.error) {
+      showError(`${data.error}`);
+    } else {
+      renderResults(data);
+    }
+  } catch (err) {
+    showError(`Network error: ${err.message}`);
+  } finally {
+    setLoading(false);
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+//  RENDER RESULTS
+// ══════════════════════════════════════════════════════════════════════════
+function renderResults(data) {
+  const panel = document.getElementById('resultsPanel');
+  panel.innerHTML = '';
+
+  const { summary, charts, meta, warning } = data;
+
+  // ── Lookahead / warning banner ─────────────────────────────────────────
+  if (warning) {
+    const wb = document.createElement('div');
+    wb.style.cssText = `
+      background: rgba(245,200,66,0.08);
+      border: 1px solid rgba(245,200,66,0.35);
+      border-radius: 10px; padding: 12px 16px; margin-bottom: 4px;
+      font-family: var(--font-mono); font-size: 11px; color: #f5c842;
+      line-height: 1.5;
+    `;
+    wb.textContent = warning;
+    panel.appendChild(wb);
+  }
+
+  // ── Metrics strip ──────────────────────────────────────────────────────
+  const s = summary;
+  const metricsData = [
+    { label: 'Total Return',       value: pct(s.total_return),           cls: (s.total_return||0) >= 0 ? 'positive' : 'negative', accent: '#00e5a0' },
+    { label: 'Ann. Return',        value: pct(s.annualized_return),      cls: (s.annualized_return||0) >= 0 ? 'positive' : 'negative', accent: '#00e5a0' },
+    { label: 'Sharpe Ratio',       value: fmt2(s.sharpe_ratio),          cls: colorSharpe(s.sharpe_ratio), accent: '#f5c842' },
+    // { label: 'Information Ratio',  value: fmt2(s.information_ratio),     cls: colorSharpe(s.information_ratio), accent: '#f5c842' },
+    { label: 'Sortino Ratio',      value: fmt2(s.sortino_ratio),         cls: colorSharpe(s.sortino_ratio), accent: '#f5c842' },
+    { label: 'Max Drawdown',       value: pct(s.max_drawdown),           cls: 'negative', accent: '#ff4466' },
+    { label: 'Calmar Ratio',       value: fmt2(s.calmar_ratio),          cls: 'neutral', accent: '#f5c842' },
+    { label: 'Ann. Volatility',    value: pct(s.annualized_vol),         cls: 'info', accent: '#00e5ff' },
+    { label: 'Avg Turnover/Day',   value: pct(s.avg_daily_turnover),     cls: 'accent', accent: '#b97fff' },
+    { label: 'Win Rate',           value: pct(s.win_rate),               cls: 'info', accent: '#00e5ff' },
+    { label: 'Profit Factor',      value: fmt2(s.profit_factor),         cls: (s.profit_factor||0) >= 1 ? 'positive' : 'negative', accent: '#00e5a0' },
+    { label: 'Avg Win',            value: fmtBps(s.avg_win),             cls: 'positive', accent: '#00e5a0' },
+    { label: 'Avg Loss',           value: fmtBps(s.avg_loss),            cls: 'negative', accent: '#ff4466' },
+    { label: 'Skewness',           value: fmt2(s.skewness),              cls: 'neutral', accent: '#f5c842' },
+    { label: 'Kurtosis',           value: fmt2(s.kurtosis),              cls: 'neutral', accent: '#f5c842' },
+    // { label: 'VPIN',               value: fmt2(s.vpin),                  cls: 'info', accent: '#00e5ff' },
+    // { label: 'Recovery Factor',    value: fmt2(s.recovery_factor),       cls: 'accent', accent: '#b97fff' },
+    // { label: 'Pain Index',         value: pct(s.pain_index),             cls: 'negative', accent: '#ff4466' },
+    // { label: 'Fitness Score',      value: fmt2(s.fitness),               cls: 'accent', accent: '#b97fff' },
+    { label: 'Trading Days',       value: s.n_trading_days,              cls: 'neutral', accent: '#f5c842' },
+  ];
+
+  const mGrid = document.createElement('div');
+  mGrid.className = 'metrics-grid fade-in';
+  metricsData.forEach(m => {
+    const card = document.createElement('div');
+    card.className = 'metric-card';
+    card.style.setProperty('--accent-color', m.accent);
+    card.innerHTML = `
+      <div class="metric-label">${m.label}</div>
+      <div class="metric-value ${m.cls}">${m.value ?? '—'}</div>
+    `;
+    mGrid.appendChild(card);
+  });
+  panel.appendChild(mGrid);
+
+  // ── Charts ────────────────────────────────────────────────────────────
+  const chartsWrap = document.createElement('div');
+  chartsWrap.className = 'charts-grid fade-in';
+
+  chartsWrap.appendChild(buildChartPanel('Cumulative Net PnL (%)', '<span class="chart-dot dot-gold"></span>', 'cumPnlChart', 'chart-wide'));
+  chartsWrap.appendChild(buildChartPanel('Daily Returns (%)', '<span class="chart-dot dot-cyan"></span>', 'dailyRetChart', ''));
+  chartsWrap.appendChild(buildChartPanel('Drawdown (%)', '<span class="chart-dot dot-red"></span>', 'drawdownChart', ''));
+  chartsWrap.appendChild(buildChartPanel('Rolling Sharpe (63d)', '<span class="chart-dot dot-purple"></span>', 'rollingShChart', ''));
+  chartsWrap.appendChild(buildChartPanel('Daily Turnover (%)', '<span class="chart-dot dot-green"></span>', 'turnoverChart', ''));
+  chartsWrap.appendChild(buildChartPanel('Rolling Volatility 21d (%)', '<span class="chart-dot dot-cyan"></span>', 'rollingVolChart', ''));
+
+  panel.appendChild(chartsWrap);
+
+  // ── AI Feedback ──────────────────────────────────────────────────────────
+  const aiPanel = document.createElement('div');
+  aiPanel.className = 'panel chart-panel ai-panel fade-in';
+  aiPanel.style.marginTop = '20px';
+  aiPanel.innerHTML = `
+    <div class="chart-title"><span class="chart-dot dot-orange"></span> AI Analysis</div>
+    <div id="aiFeedback" style="font-family: var(--font-mono); font-size: 12px; color: #ffffff; line-height: 1.6; white-space: pre-wrap;"></div>
+  `;
+  panel.appendChild(aiPanel);
+
+  // ── Meta footer ───────────────────────────────────────────────────────
+  if (meta) {
+    const neutralLabel = meta.neutralisation !== 'none' ? ` · NEUTRAL <span>${meta.neutralisation.toUpperCase()}</span>` : '';
+    const stopLabel    = meta.trailing_stop ? ` · STOP <span>${(meta.trailing_stop*100).toFixed(1)}%</span>` : '';
+    const metaDiv = document.createElement('div');
+    metaDiv.className = 'meta-row fade-in';
+    metaDiv.innerHTML = `
+      <span class="meta-item">UNIVERSE <span>${meta.universe || 'TOPSP500'}</span></span>
+      <span class="meta-item" style="color:rgba(255,255,255,0.1)">|</span>
+      <span class="meta-item">TICKERS <span>${meta.n_tickers}</span></span>
+      <span class="meta-item" style="color:rgba(255,255,255,0.1)">|</span>
+      <span class="meta-item">PERIOD <span>${meta.start} → ${meta.end}</span></span>
+      <span class="meta-item" style="color:rgba(255,255,255,0.1)">|</span>
+      <span class="meta-item">T-COST <span>${meta.tcost_bps} bps</span></span>
+      <span class="meta-item" style="color:rgba(255,255,255,0.1)">|</span>
+      <span class="meta-item">MAX WT <span>${(meta.max_weight * 100).toFixed(0)}%</span></span>
+      ${neutralLabel ? `<span class="meta-item" style="color:rgba(255,255,255,0.1)">|</span><span class="meta-item">${neutralLabel}</span>` : ''}
+      ${stopLabel    ? `<span class="meta-item" style="color:rgba(255,255,255,0.1)">|</span><span class="meta-item">${stopLabel}</span>` : ''}
+      <span class="meta-item" style="color:rgba(255,255,255,0.1)">|</span>
+      <span class="meta-item">EXPR <span style="color:rgba(0,229,255,0.7)">${meta.expression}</span></span>
+    `;
+    panel.appendChild(metaDiv);
+  }
+
+  // ── Render charts ─────────────────────────────────────────────────────
+  requestAnimationFrame(() => {
+    plotCumPnl(charts.cum_pnl);
+    plotDailyReturns(charts.daily_returns);
+    plotDrawdown(charts.drawdown);
+    plotRollingSharpe(charts.rolling_sharpe);
+    plotTurnover(charts.turnover);
+    if (charts.rolling_vol && charts.rolling_vol.length) {
+      plotRollingVol(charts.rolling_vol);
+    }
+  });
+  // ── Display AI feedback ───────────────────────────────────────────────
+  if (data.llm_feedback) {
+    const fbDiv = document.getElementById('aiFeedback');
+    if (fbDiv) {
+      fbDiv.innerHTML = data.llm_feedback.replace(/\n/g, '<br>');
+    }
+  }
+}
+
+function buildChartPanel(title, dotHtml, id, extraClass) {
+  const div = document.createElement('div');
+  div.className = `chart-panel ${extraClass}`;
+  div.innerHTML = `
+    <div class="chart-title"><span>${dotHtml} ${title}</span></div>
+    <div id="${id}" class="plotly-chart"></div>
+  `;
+  return div;
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+//  INDIVIDUAL CHART RENDERERS
+// ══════════════════════════════════════════════════════════════════════════
+
+function extractXY(arr) {
+  return { x: arr.map(d => d.date), y: arr.map(d => d.value) };
+}
+
+function plotCumPnl(data) {
+  const { x, y } = extractXY(data);
+  Plotly.newPlot('cumPnlChart', [{
+    x, y, type: 'scatter', mode: 'lines', name: 'Net PnL',
+    line: { color: '#f5c842', width: 2.5, shape: 'spline', smoothing: 0.3 },
+    fill: 'tozeroy', fillcolor: 'rgba(245,200,66,0.05)',
+    hovertemplate: '<b>%{x}</b><br>Cum PnL: %{y:.4f}<extra></extra>',
+  }],
+  { ...PLOTLY_LAYOUT_BASE, height: 260 }, PLOTLY_CONFIG);
+}
+
+function plotDailyReturns(data) {
+  const { x, y } = extractXY(data);
+  const colors = y.map(v => v >= 0 ? 'rgba(0,229,160,0.75)' : 'rgba(255,68,102,0.75)');
+  Plotly.newPlot('dailyRetChart', [{
+    x, y, type: 'bar', name: 'Daily Ret %',
+    marker: { color: colors },
+    hovertemplate: '<b>%{x}</b><br>Return: %{y:.3f}%<extra></extra>',
+  }],
+  { ...PLOTLY_LAYOUT_BASE, height: 220, yaxis: { ...PLOTLY_LAYOUT_BASE.yaxis, ticksuffix: '%' } },
+  PLOTLY_CONFIG);
+}
+
+function plotDrawdown(data) {
+  const { x, y } = extractXY(data);
+  Plotly.newPlot('drawdownChart', [{
+    x, y, type: 'scatter', mode: 'lines', name: 'Drawdown',
+    line: { color: '#ff4466', width: 2 },
+    fill: 'tozeroy', fillcolor: 'rgba(255,68,102,0.08)',
+    hovertemplate: '<b>%{x}</b><br>DD: %{y:.2f}%<extra></extra>',
+  }],
+  { ...PLOTLY_LAYOUT_BASE, height: 220, yaxis: { ...PLOTLY_LAYOUT_BASE.yaxis, ticksuffix: '%' } },
+  PLOTLY_CONFIG);
+}
+
+function plotRollingSharpe(data) {
+  const { x, y } = extractXY(data);
+  Plotly.newPlot('rollingShChart', [
+    {
+      x, y,
+      type: 'scatter', mode: 'lines',
+      name: 'Rolling Sharpe',
+      line: { color: '#b97fff', width: 2 },
+      hovertemplate: '<b>%{x}</b><br>Sharpe: %{y:.3f}<extra></extra>',
+    }
+  ],
+  {
+    ...PLOTLY_LAYOUT_BASE,
+    height: 220,
+    shapes: [{
+      type: 'line',
+      xref: 'paper', yref: 'y',   // xref:'paper' = always spans full width 0→1
+      x0: 0, x1: 1,
+      y0: 1, y1: 1,
+      line: { color: 'rgba(245,200,66,0.3)', width: 1, dash: 'dash' },
+    }],
+    annotations: [{
+      xref: 'paper', yref: 'y',
+      x: 0.01, y: 1,
+      xanchor: 'left', yanchor: 'bottom',
+      text: 'Sharpe = 1',
+      showarrow: false,
+      font: { family: "'Share Tech Mono', monospace", size: 10, color: 'rgba(245,200,66,0.5)' },
+    }],
+  },
+  PLOTLY_CONFIG);
+}
+
+function plotTurnover(data) {
+  const { x, y } = extractXY(data);
+  Plotly.newPlot('turnoverChart', [{
+    x, y, type: 'scatter', mode: 'lines', name: 'Turnover',
+    line: { color: '#00e5a0', width: 1.5 },
+    fill: 'tozeroy', fillcolor: 'rgba(0,229,160,0.05)',
+    hovertemplate: '<b>%{x}</b><br>TO: %{y:.2f}%<extra></extra>',
+  }],
+  { ...PLOTLY_LAYOUT_BASE, height: 220, yaxis: { ...PLOTLY_LAYOUT_BASE.yaxis, ticksuffix: '%' } },
+  PLOTLY_CONFIG);
+}
+
+function plotRollingVol(data) {
+  const { x, y } = extractXY(data);
+  Plotly.newPlot('rollingVolChart', [{
+    x, y, type: 'scatter', mode: 'lines', name: 'Rolling Vol',
+    line: { color: '#00e5ff', width: 1.5 },
+    fill: 'tozeroy', fillcolor: 'rgba(0,229,255,0.05)',
+    hovertemplate: '<b>%{x}</b><br>Vol: %{y:.2f}%<extra></extra>',
+  }],
+  { ...PLOTLY_LAYOUT_BASE, height: 220, yaxis: { ...PLOTLY_LAYOUT_BASE.yaxis, ticksuffix: '%' } },
+  PLOTLY_CONFIG);
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════════════════════════════════════════════
+function pct(v) {
+  if (v == null) return '—';
+  return (v * 100).toFixed(2) + '%';
+}
+
+function fmtBps(v) {
+  if (v == null) return '—';
+  return (v * 10000).toFixed(1) + ' bps';
+}
+
+function fmt2(v) {
+  if (v == null) return '—';
+  return parseFloat(v).toFixed(3);
+}
+
+function colorSharpe(v) {
+  if (v == null) return 'neutral';
+  if (v >= 1.5)  return 'positive';
+  if (v >= 0.5)  return 'neutral';
+  return 'negative';
+}
+
+function setLoading(on) {
+  const overlay = document.getElementById('loadingOverlay');
+  const btn     = document.getElementById('runBtn');
+  const spinner = document.getElementById('spinner');
+  const label   = document.getElementById('runLabel');
+  if (on) {
+    overlay.classList.add('active');
+    btn.disabled = true;
+    spinner.style.display = 'block';
+    label.textContent = 'RUNNING…';
+  } else {
+    overlay.classList.remove('active');
+    btn.disabled = false;
+    spinner.style.display = 'none';
+    label.textContent = 'RUN BACKTEST';
+  }
+}
+
+function showError(msg) {
+  const b = document.getElementById('errorBanner');
+  b.textContent = '⚠ ' + msg;
+  b.style.display = 'block';
+}
+
+function hideError() {
+  document.getElementById('errorBanner').style.display = 'none';
+}
+
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') runBacktest();
+});
+
+// ── Boot ──
+initOpGrid();
+loadPresets();
+</script>
+</body>
+</html>

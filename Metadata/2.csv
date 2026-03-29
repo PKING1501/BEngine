@@ -1,0 +1,501 @@
+No.,Symbol,Company Name,Market Cap,Stock Price,% Change,Revenue
+1,TTE,TotalEnergies SE,193.09B,89.87
+2,SAP,SAP SE,191.58B,164.02
+3,NEE,"NextEra Energy, Inc.",190.43B,91.40
+4,KLAC,KLA Corporation,189.17B,"1,443.21"
+5,AMGN,Amgen Inc.,188.01B,348.77
+6,C,Citigroup Inc.,187.84B,107.38
+7,FMX,"Fomento EconÃ³mico Mexicano, S.A.B. de C.V.",186.06B,107.57
+8,MUFG,"Mitsubishi UFJ Financial Group, Inc.",185.10B,16.33
+9,ABT,Abbott Laboratories,180.70B,103.99
+10,TV,"Grupo Televisa, S.A.B.",177.96B,2.860
+11,BHP,BHP Group Limited,176.37B,69.50
+12,TMO,Thermo Fisher Scientific Inc.,175.85B,473.36
+13,TXN,Texas Instruments Incorporated,172.73B,190.33
+14,TJX,"The TJX Companies, Inc.",172.26B,155.12
+15,GILD,"Gilead Sciences, Inc.",166.66B,134.25
+16,CRM,"Salesforce, Inc.",165.50B,179.31
+17,DIS,The Walt Disney Company,163.72B,92.42
+18,COP,ConocoPhillips,163.55B,133.80
+19,SCHW,The Charles Schwab Corporation,161.83B,92.36
+20,NVO,Novo Nordisk A/S,160.92B,36.04
+21,ISRG,"Intuitive Surgical, Inc.",160.75B,452.66
+22,SAN,"Banco Santander, S.A.",156.44B,10.65
+23,CX,"CEMEX, S.A.B. de C.V.",155.96B,10.75
+24,PFE,Pfizer Inc.,153.76B,27.04
+25,ARM,Arm Holdings plc,153.07B,144.13
+26,DE,Deere & Company,153.05B,566.64
+27,TD,The Toronto-Dominion Bank,152.62B,91.37
+28,APH,Amphenol Corporation,151.96B,123.62
+29,ANET,"Arista Networks, Inc.",151.75B,120.77
+30,ADI,"Analog Devices, Inc.",150.09B,307.44
+31,BA,The Boeing Company,149.62B,190.52
+32,SHOP,Shopify Inc.,145.86B,111.85
+33,BLK,"BlackRock, Inc.",145.25B,933.85
+34,UBER,"Uber Technologies, Inc.",142.38B,69.18
+35,HON,Honeywell International Inc.,141.83B,223.12
+36,UNP,Union Pacific Corporation,141.70B,238.79
+37,LMT,Lockheed Martin Corporation,141.69B,615.84
+38,PDD,PDD Holdings Inc.,138.95B,99.81
+39,ETN,Eaton Corporation plc,138.62B,357.36
+40,WELL,Welltower Inc.,136.60B,195.77
+41,BUD,Anheuser-Busch InBev SA/NV,136.44B,67.57
+42,QCOM,QUALCOMM Incorporated,135.63B,127.11
+43,BTI,British American Tobacco p.l.c.,133.50B,57.80
+44,SCCO,Southern Copper Corporation,132.75B,162.07
+45,UL,Unilever PLC,129.72B,59.37
+46,LOW,"Lowe's Companies, Inc.",128.99B,230.31
+47,BKNG,Booking Holdings Inc.,128.66B,"4,062.14"
+48,APP,AppLovin Corporation,128.57B,381.20
+49,DHR,Danaher Corporation,128.36B,181.52
+50,PBR.A,PetrÃ³leo Brasileiro S.A. - Petrobras,125.69B,18.80
+51,SYK,Stryker Corporation,125.31B,327.44
+52,HDB,HDFC Bank Limited,124.70B,24.35
+53,CB,Chubb Limited,124.50B,319.09
+54,BP,BP p.l.c.,122.15B,46.68
+55,SMFG,"Sumitomo Mitsui Financial Group, Inc.",121.56B,19.05
+56,SPGI,S&P Global Inc.,121.38B,406.24
+57,PANW,"Palo Alto Networks, Inc.",119.97B,147.02
+58,PLD,"Prologis, Inc.",119.82B,128.90
+59,ENB,Enbridge Inc.,119.29B,54.58
+60,BMY,Bristol-Myers Squibb Company,119.22B,58.54
+61,SONY,Sony Group Corporation,118.45B,19.91
+62,ACN,Accenture plc,118.24B,192.60
+63,GLW,Corning Incorporated,117.38B,136.81
+64,BBVA,"Banco Bilbao Vizcaya Argentaria, S.A.",116.58B,20.42
+65,PGR,The Progressive Corporation,116.50B,198.84
+66,INTU,Intuit Inc.,115.17B,416.44
+67,SNY,Sanofi,114.09B,46.78
+68,UBS,UBS Group AG,112.57B,36.41
+69,PH,Parker-Hannifin Corporation,112.14B,888.44
+70,MDT,Medtronic plc,111.88B,87.14
+71,MO,"Altria Group, Inc.",111.15B,66.48
+72,NEM,Newmont Corporation,111.07B,102.10
+73,DELL,Dell Technologies Inc.,110.95B,171.81
+74,VRTX,Vertex Pharmaceuticals Incorporated,110.01B,433.07
+75,GSK,GSK plc,109.56B,53.84
+76,COF,Capital One Financial Corporation,109.52B,176.10
+77,CEG,Constellation Energy Corporation,109.14B,301.49
+78,RIO,Rio Tinto Group,108.69B,86.64
+79,SO,The Southern Company,106.96B,95.55
+80,SOMN,The Southern Company,106.81B,51.22
+81,HCA,"HCA Healthcare, Inc.",105.52B,471.85
+82,MCK,McKesson Corporation,105.36B,860.16
+83,CME,CME Group Inc.,105.36B,293.78
+84,NOW,"ServiceNow, Inc.",103.98B,99.41
+85,EQNR,Equinor ASA,103.84B,41.53
+86,BSX,Boston Scientific Corporation,102.64B,69.17
+87,CMCSA,Comcast Corporation,101.93B,28.33
+88,CNQ,Canadian Natural Resources Limited,101.75B,50.09
+89,DUK,Duke Energy Corporation,101.09B,129.99
+90,SBUX,Starbucks Corporation,98.90B,86.81
+91,SPOT,Spotify Technology S.A.,97.25B,472.48
+92,AEM,Agnico Eagle Mines Limited,96.89B,193.40
+93,NOC,Northrop Grumman Corporation,96.36B,679.00
+94,VRT,Vertiv Holdings Co,96.06B,251.07
+95,ADBE,Adobe Inc.,94.92B,234.84
+96,EQIX,"Equinix, Inc.",94.62B,963.00
+97,GD,General Dynamics Corporation,93.76B,346.76
+98,CRWD,"CrowdStrike Holdings, Inc.",93.73B,369.58
+99,BMO,Bank of Montreal,93.44B,131.76
+100,WDC,Western Digital Corporation,93.35B,275.34
+101,HWM,Howmet Aerospace Inc.,91.37B,227.90
+102,SNDK,Sandisk Corporation,90.88B,615.83
+103,TT,Trane Technologies plc,90.80B,410.23
+104,WM,"Waste Management, Inc.",90.77B,225.06
+105,IBN,ICICI Bank Limited,90.37B,25.30
+106,WMB,"The Williams Companies, Inc.",89.88B,73.58
+107,CVS,CVS Health Corporation,89.16B,70.08
+108,BN,Brookfield Corporation,88.78B,39.00
+109,CM,Canadian Imperial Bank of Commerce,86.88B,92.76
+110,ITUB,ItaÃº Unibanco Holding S.A.,86.78B,7.87
+111,ICE,"Intercontinental Exchange, Inc.",86.70B,152.67
+112,EPD,Enterprise Products Partners L.P.,84.91B,39.28
+113,MAR,"Marriott International, Inc.",84.14B,317.54
+114,BNS,The Bank of Nova Scotia,83.59B,67.71
+115,MRVL,"Marvell Technology, Inc.",82.95B,94.88
+116,STX,Seagate Technology Holdings plc,82.88B,380.07
+117,IBP,"Installed Building Products, Inc.",82.79B,262.33
+118,PWR,"Quanta Services, Inc.",82.29B,549.98
+119,FDX,FedEx Corporation,82.07B,343.97
+120,MRSH,"Marsh & McLennan Companies, Inc.",81.90B,169.17
+121,PNC,"The PNC Financial Services Group, Inc.",81.64B,202.39
+122,NGG,National Grid plc,81.45B,81.92
+123,E,Eni S.p.A.,81.21B,55.22
+124,MELI,"MercadoLibre, Inc.",81.09B,"1,599.52"
+125,ADP,"Automatic Data Processing, Inc.",81.03B,201.25
+126,FCX,Freeport-McMoRan Inc.,80.83B,56.24
+127,UPS,"United Parcel Service, Inc.",80.49B,94.80
+128,JCI,Johnson Controls International plc,80.35B,131.29
+129,EOG,"EOG Resources, Inc.",80.24B,149.56
+130,BX,Blackstone Inc.,80.21B,108.07
+131,SLB,SLB N.V.,80.00B,53.50
+132,SU,Suncor Energy Inc.,79.14B,66.66
+133,AMT,American Tower Corporation,79.01B,169.52
+134,USB,U.S. Bancorp,78.93B,50.85
+135,KKR,KKR & Co. Inc.,78.90B,88.50
+136,BK,The Bank of New York Mellon Corporation,78.76B,114.66
+137,SHW,The Sherwin-Williams Company,78.14B,315.37
+138,REGN,"Regeneron Pharmaceuticals, Inc.",77.99B,737.71
+139,PBR,PetrÃ³leo Brasileiro S.A. - Petrobras,77.29B,20.77
+140,VLO,Valero Energy Corporation,76.05B,254.32
+141,NKE,"NIKE, Inc.",76.05B,51.37
+142,KMI,"Kinder Morgan, Inc.",75.71B,34.03
+143,ORLY,"O'Reilly Automotive, Inc.",75.56B,90.11
+144,PSX,Phillips 66,75.45B,188.28
+145,MMM,3M Company,75.34B,143.04
+146,MCO,Moody's Corporation,75.32B,424.84
+147,ABNB,"Airbnb, Inc.",74.79B,122.87
+148,MDLZ,"Mondelez International, Inc.",74.69B,58.27
+149,ITW,Illinois Tool Works Inc.,74.66B,259.04
+150,MPC,Marathon Petroleum Corporation,74.25B,251.91
+151,CDNS,"Cadence Design Systems, Inc.",74.10B,271.77
+152,CSX,CSX Corporation,73.77B,39.67
+153,ECL,Ecolab Inc.,73.70B,261.37
+154,SNPS,"Synopsys, Inc.",72.88B,380.47
+155,MSI,"Motorola Solutions, Inc.",72.61B,438.32
+156,CMI,Cummins Inc.,72.29B,523.24
+157,ING,ING Groep N.V.,71.95B,24.79
+158,NET,"Cloudflare, Inc.",71.46B,203.02
+159,LYG,Lloyds Banking Group plc,71.28B,4.830
+160,CP,Canadian Pacific Kansas City Limited,70.91B,78.23
+161,RCL,Royal Caribbean Cruises Ltd.,70.82B,261.80
+162,EMR,Emerson Electric Co.,70.47B,125.40
+163,MNST,Monster Beverage Corporation,70.27B,71.83
+164,BAM,Brookfield Asset Management Ltd.,70.25B,43.18
+165,BCS,Barclays PLC,69.81B,20.24
+166,AEP,"American Electric Power Company, Inc.",69.64B,130.10
+167,NTES,"NetEase, Inc.",69.23B,109.26
+168,CI,The Cigna Group,69.03B,261.96
+169,ROST,"Ross Stores, Inc.",68.85B,211.69
+170,CRH,CRH plc,67.99B,101.74
+171,ET,Energy Transfer LP,67.67B,19.67
+172,CL,Colgate-Palmolive Company,67.56B,84.29
+173,HLT,Hilton Worldwide Holdings Inc.,67.42B,294.04
+174,AON,Aon plc,67.20B,313.66
+175,WBD,"Warner Bros. Discovery, Inc.",67.13B,27.07
+176,RSG,"Republic Services, Inc.",66.48B,215.83
+177,TRP,TC Energy Corporation,66.32B,63.46
+178,CTAS,Cintas Corporation,66.27B,165.71
+179,NU,Nu Holdings Ltd.,66.04B,13.60
+180,GM,General Motors Company,65.97B,72.98
+181,APD,"Air Products and Chemicals, Inc.",65.06B,292.19
+182,B,Barrick Mining Corporation,64.53B,38.59
+183,OXY,Occidental Petroleum Corporation,64.42B,65.32
+184,TDG,TransDigm Group Incorporated,64.38B,"1,140.03"
+185,VALE,Vale S.A.,64.16B,15.03
+186,LHX,"L3Harris Technologies, Inc.",64.06B,343.00
+187,DASH,"DoorDash, Inc.",63.69B,146.60
+188,NSC,Norfolk Southern Corporation,63.61B,283.25
+189,ELV,"Elevance Health, Inc.",63.21B,286.39
+190,IMO,Imperial Oil Limited,63.18B,130.76
+191,APO,"Apollo Global Management, Inc.",62.69B,108.42
+192,SRE,Sempra,62.64B,95.88
+193,BKR,Baker Hughes Company,62.48B,63.22
+194,LNG,"Cheniere Energy, Inc.",62.41B,296.91
+195,CNI,Canadian National Railway Company,62.03B,101.43
+196,TRV,"The Travelers Companies, Inc.",61.69B,285.27
+197,COR,"Cencora, Inc.",60.78B,312.45
+198,DLR,"Digital Realty Trust, Inc.",60.28B,175.42
+199,HOOD,"Robinhood Markets, Inc.",59.44B,66.02
+200,TEL,TE Connectivity plc,59.31B,202.14
+201,PCAR,PACCAR Inc,59.29B,112.75
+202,OKE,"ONEOK, Inc.",59.17B,93.96
+203,MPLX,MPLX LP,59.01B,58.13
+204,SPG,"Simon Property Group, Inc.",58.55B,180.19
+205,FTNT,"Fortinet, Inc.",58.15B,78.20
+206,RELX,RELX PLC,57.67B,31.97
+207,FANG,"Diamondback Energy, Inc.",56.93B,201.84
+208,NWG,NatWest Group plc,56.92B,14.27
+209,CIEN,Ciena Corporation,56.79B,401.61
+210,O,Realty Income Corporation,56.68B,60.69
+211,TAK,Takeda Pharmaceutical Company Limited,56.58B,17.91
+212,WPM,Wheaton Precious Metals Corp.,56.51B,124.70
+213,MFC,Manulife Financial Corporation,56.48B,33.63
+214,RACE,Ferrari N.V.,56.27B,317.40
+215,TFC,Truist Financial Corporation,55.63B,44.53
+216,CTVA,"Corteva, Inc.",55.14B,81.99
+217,AFL,Aflac Incorporated,54.95B,106.41
+218,AZO,"AutoZone, Inc.",54.65B,"3,316.71"
+219,MDLN,Medline Inc.,54.33B,41.36
+220,TGT,Target Corporation,54.27B,119.84
+221,DB,Deutsche Bank Aktiengesellschaft,54.13B,28.37
+222,TRGP,Targa Resources Corp.,53.79B,250.23
+223,D,"Dominion Energy, Inc.",53.50B,60.88
+224,AJG,Arthur J. Gallagher & Co.,53.25B,207.10
+225,SNOW,Snowflake Inc.,52.82B,152.80
+226,ALL,The Allstate Corporation,52.73B,202.71
+227,VST,Vistra Corp.,52.39B,155.48
+228,INFY,Infosys Limited,52.02B,12.83
+229,MPWR,"Monolithic Power Systems, Inc.",51.72B,"1,053.01"
+230,FAST,Fastenal Company,51.61B,44.95
+231,EA,Electronic Arts Inc.,50.55B,202.01
+232,CVE,Cenovus Energy Inc.,50.27B,26.82
+233,LITE,Lumentum Holdings Inc.,50.17B,702.73
+234,GWW,"W.W. Grainger, Inc.",50.08B,"1,057.07"
+235,ETR,Entergy Corporation,49.77B,109.88
+236,EXC,Exelon Corporation,49.43B,48.32
+237,CAH,"Cardinal Health, Inc.",48.61B,206.58
+238,ADSK,"Autodesk, Inc.",48.50B,229.84
+239,NXPI,NXP Semiconductors N.V.,48.43B,191.66
+240,FIX,"Comfort Systems USA, Inc.",48.08B,"1,366.77"
+241,AME,"AMETEK, Inc.",47.91B,209.24
+242,KEYS,"Keysight Technologies, Inc.",47.86B,279.06
+243,ZTS,Zoetis Inc.,47.85B,113.35
+244,UI,Ubiquiti Inc.,47.20B,779.92
+245,WDS,Woodside Energy Group Ltd,46.98B,24.78
+246,PSA,Public Storage,46.69B,266.01
+247,ASX,"ASE Technology Holding Co., Ltd.",46.67B,21.50
+248,NDAQ,"Nasdaq, Inc.",46.32B,81.48
+249,TER,"Teradyne, Inc.",46.28B,295.61
+250,URI,"United Rentals, Inc.",46.26B,734.30
+251,EW,Edwards Lifesciences Corporation,46.08B,79.34
+252,SE,Sea Limited,46.04B,78.16
+253,COHR,Coherent Corp.,45.65B,243.48
+254,CCJ,Cameco Corporation,45.60B,103.92
+255,CARR,Carrier Global Corporation,45.34B,54.25
+256,F,Ford Motor Company,45.30B,11.37
+257,FER,Ferrovial SE,45.16B,62.56
+258,AU,AngloGold Ashanti plc,45.03B,89.17
+259,KR,The Kroger Co.,44.96B,73.22
+260,NOK,Nokia Oyj,44.55B,7.98
+261,IDXX,"IDEXX Laboratories, Inc.",44.46B,558.32
+262,GRMN,Garmin Ltd.,44.30B,230.16
+263,BMA,Banco Macro S.A.,44.26B,69.26
+264,MET,"MetLife, Inc.",44.14B,67.70
+265,BDX,"Becton, Dickinson and Company",44.00B,154.51
+266,FERG,Ferguson Enterprises Inc.,43.95B,224.76
+267,FNV,Franco-Nevada Corporation,43.91B,233.95
+268,ABEV,Ambev S.A.,43.88B,2.810
+269,HLN,Haleon plc,43.65B,9.80
+270,HSY,The Hershey Company,43.32B,213.73
+271,CVNA,Carvana Co.,43.11B,302.04
+272,VG,"Venture Global, Inc.",43.07B,17.53
+273,ARGX,argenx SE,42.79B,691.40
+274,YUM,"Yum! Brands, Inc.",42.56B,153.96
+275,COIN,"Coinbase Global, Inc.",42.55B,161.14
+276,DAL,"Delta Air Lines, Inc.",42.34B,64.83
+277,EQT,EQT Corporation,42.17B,67.55
+278,ALNY,"Alnylam Pharmaceuticals, Inc.",42.09B,317.36
+279,MSTR,Strategy Inc,42.06B,126.03
+280,DEO,Diageo plc,41.23B,74.07
+281,CCEP,Coca-Cola Europacific Partners PLC,41.15B,91.64
+282,WAB,Westinghouse Air Brake Technologies Corporation,41.11B,241.11
+283,ESLT,Elbit Systems Ltd.,40.40B,869.82
+284,DDOG,"Datadog, Inc.",40.36B,114.48
+285,ED,"Consolidated Edison, Inc.",40.34B,111.68
+286,PEG,Public Service Enterprise Group Incorporated,40.25B,80.71
+287,CMG,"Chipotle Mexican Grill, Inc.",40.19B,30.86
+288,TRI,Thomson Reuters Corporation,40.18B,89.43
+289,FITB,Fifth Third Bancorp,40.17B,44.54
+290,PYPL,"PayPal Holdings, Inc.",40.13B,43.59
+291,WCN,"Waste Connections, Inc.",39.88B,156.02
+292,AMP,"Ameriprise Financial, Inc.",39.83B,436.81
+293,ROK,"Rockwell Automation, Inc.",39.49B,351.50
+294,EBAY,eBay Inc.,39.42B,87.98
+295,JD,"JD.com, Inc.",39.35B,28.70
+296,CRWV,"CoreWeave, Inc.",39.33B,74.81
+297,ODFL,"Old Dominion Freight Line, Inc.",39.25B,188.34
+298,SYY,Sysco Corporation,39.18B,81.80
+299,AIG,"American International Group, Inc.",39.14B,72.95
+300,VTR,"Ventas, Inc.",38.90B,81.91
+301,CBRE,"CBRE Group, Inc.",38.89B,131.77
+302,DHI,"D.R. Horton, Inc.",38.88B,134.19
+303,RKT,"Rocket Companies, Inc.",38.55B,13.67
+304,MSCI,MSCI Inc.,38.46B,523.40
+305,MT,ArcelorMittal S.A.,38.15B,49.62
+306,HEI,HEICO Corporation,38.14B,273.39
+307,ERIC,Telefonaktiebolaget LM Ericsson (publ),37.56B,11.14
+308,NUE,Nucor Corporation,37.39B,163.37
+309,BE,Bloom Energy Corporation,37.38B,133.24
+310,GFI,Gold Fields Limited,37.26B,42.34
+311,WEC,"WEC Energy Group, Inc.",37.23B,114.36
+312,RBLX,Roblox Corporation,37.07B,52.31
+313,BIDU,"Baidu, Inc.",36.79B,108.12
+314,HIG,"The Hartford Insurance Group, Inc.",36.50B,132.32
+315,NTR,Nutrien Ltd.,36.43B,75.65
+316,PSNY,Polestar Automotive Holding UK PLC,36.24B,17.10
+317,ALC,Alcon Inc.,35.75B,73.34
+318,KDP,Keurig Dr Pepper Inc.,35.64B,26.23
+319,KB,KB Financial Group Inc.,35.63B,99.37
+320,ROP,"Roper Technologies, Inc.",35.45B,344.42
+321,TPL,Texas Pacific Land Corporation,35.28B,511.75
+322,PUK,Prudential plc,35.20B,27.78
+323,TTWO,"Take-Two Interactive Software, Inc.",35.13B,189.69
+324,RYAAY,Ryanair Holdings plc,34.87B,58.48
+325,ADM,Archer-Daniels-Midland Company,34.76B,72.23
+326,LVS,Las Vegas Sands Corp.,34.73B,51.69
+327,RKLB,Rocket Lab Corporation,34.57B,60.93
+328,CCL,Carnival Corporation & plc,34.54B,24.19
+329,MLM,"Martin Marietta Materials, Inc.",34.43B,570.94
+330,KGC,Kinross Gold Corporation,34.37B,28.74
+331,CCI,Crown Castle Inc.,34.27B,78.59
+332,LYV,"Live Nation Entertainment, Inc.",34.21B,145.71
+333,STT,State Street Corporation,34.15B,122.52
+334,VMC,Vulcan Materials Company,34.14B,261.46
+335,SLF,Sun Life Financial Inc.,34.05B,61.37
+336,AXON,"Axon Enterprise, Inc.",33.93B,429.94
+337,HAL,Halliburton Company,33.85B,40.42
+338,KVUE,Kenvue Inc.,33.58B,17.52
+339,MCHP,Microchip Technology Incorporated,33.55B,62.00
+340,VOD,Vodafone Group Public Limited Company,33.54B,14.49
+341,XYZ,"Block, Inc.",33.54B,55.98
+342,SATS,EchoStar Corporation,33.28B,115.21
+343,ACGL,Arch Capital Group Ltd.,33.24B,93.42
+344,CPNG,"Coupang, Inc.",33.07B,18.09
+345,TEVA,Teva Pharmaceutical Industries Limited,33.05B,28.74
+346,PAYX,"Paychex, Inc.",32.85B,91.68
+347,KMB,Kimberly-Clark Corporation,32.75B,98.66
+348,CHT,"Chunghwa Telecom Co., Ltd.",32.64B,42.08
+349,EME,"EMCOR Group, Inc.",32.64B,732.89
+350,HEI.A,HEICO Corporation,32.61B,207.78
+351,QSR,Restaurant Brands International Inc.,32.56B,71.42
+352,PRU,"Prudential Financial, Inc.",32.46B,93.29
+353,DVN,Devon Energy Corporation,32.28B,52.07
+354,RMD,ResMed Inc.,32.12B,220.47
+355,WDAY,"Workday, Inc.",31.91B,124.18
+356,HPE,Hewlett Packard Enterprise Company,31.76B,23.94
+357,NRG,"NRG Energy, Inc.",31.72B,147.74
+358,TCOM,Trip.com Group Limited,31.68B,48.49
+359,HMC,"Honda Motor Co., Ltd.",31.58B,24.34
+360,GEHC,GE HealthCare Technologies Inc.,31.55B,69.23
+361,CLS,Celestica Inc.,31.43B,280.22
+362,CQP,"Cheniere Energy Partners, L.P.",31.42B,64.92
+363,ONC,BeOne Medicines AG,31.37B,283.03
+364,INSM,Insmed Incorporated,31.32B,145.30
+365,CPRT,"Copart, Inc.",31.24B,32.43
+366,A,"Agilent Technologies, Inc.",31.15B,110.24
+367,IR,Ingersoll Rand Inc.,31.11B,79.45
+368,AXIA,AXIA Energia SA,31.04B,10.71
+369,EC,Ecopetrol S.A.,30.86B,15.01
+370,VIK,Viking Holdings Ltd,30.56B,68.58
+371,BAP,Credicorp Ltd.,30.43B,322.43
+372,ATO,Atmos Energy Corporation,30.31B,183.19
+373,AEE,Ameren Corporation,30.05B,108.72
+374,DTE,DTE Energy Company,30.02B,144.47
+375,MTB,M&T Bank Corporation,29.94B,200.93
+376,OTIS,Otis Worldwide Corporation,29.52B,75.95
+377,TS,Tenaris S.A.,29.49B,58.29
+378,SHG,"Shinhan Financial Group Co., Ltd.",29.39B,60.83
+379,DOW,Dow Inc.,29.29B,40.82
+380,IRM,Iron Mountain Incorporated,29.08B,98.30
+381,STM,STMicroelectronics N.V.,28.92B,32.54
+382,FE,FirstEnergy Corp.,28.91B,50.03
+383,FISV,"Fiserv, Inc.",28.82B,53.90
+384,UAL,"United Airlines Holdings, Inc.",28.60B,88.44
+385,IBKR,"Interactive Brokers Group, Inc.",28.59B,64.20
+386,XYL,Xylem Inc.,28.58B,117.55
+387,CBOE,"Cboe Global Markets, Inc.",28.57B,273.00
+388,CTSH,Cognizant Technology Solutions Corporation,28.57B,59.73
+389,FTI,TechnipFMC plc,28.48B,71.19
+390,VICI,VICI Properties Inc.,28.44B,26.61
+391,WAT,Waters Corporation,28.37B,289.16
+392,PPL,PPL Corporation,28.29B,37.65
+393,FTS,Fortis Inc.,28.25B,55.66
+394,VEEV,Veeva Systems Inc.,28.19B,172.59
+395,TPR,"Tapestry, Inc.",28.11B,138.84
+396,DOV,Dover Corporation,27.86B,206.60
+397,RJF,"Raymond James Financial, Inc.",27.85B,141.32
+398,IQV,IQVIA Holdings Inc.,27.81B,163.85
+399,CHTR,"Charter Communications, Inc.",27.75B,219.14
+400,EXPE,"Expedia Group, Inc.",27.67B,225.81
+401,CNP,"CenterPoint Energy, Inc.",27.67B,42.38
+402,JBL,Jabil Inc.,27.57B,261.10
+403,CTRA,Coterra Energy Inc.,27.57B,36.31
+404,TDY,Teledyne Technologies Incorporated,27.47B,593.31
+405,EXE,Expand Energy Corporation,27.29B,113.50
+406,EXR,Extra Space Storage Inc.,27.23B,128.96
+407,EIX,Edison International,27.05B,70.30
+408,BIIB,Biogen Inc.,26.98B,183.84
+409,SUNB,"Sunbelt Rentals Holdings, Inc.",26.89B,65.27
+410,AWK,"American Water Works Company, Inc.",26.72B,136.86
+411,WTW,Willis Towers Watson Public Limited Company,26.68B,282.18
+412,PBA,Pembina Pipeline Corporation,26.63B,45.77
+413,CASY,"Casey's General Stores, Inc.",26.40B,714.24
+414,STZ,"Constellation Brands, Inc.",26.25B,151.40
+415,KHC,The Kraft Heinz Company,26.09B,22.04
+416,LYB,LyondellBasell Industries N.V.,25.92B,80.45
+417,DG,Dollar General Corporation,25.80B,117.16
+418,HUBB,Hubbell Incorporated,25.57B,480.97
+419,NTRA,"Natera, Inc.",25.51B,182.65
+420,NBIS,Nebius Group N.V.,25.51B,100.82
+421,PHG,Koninklijke Philips N.V.,25.48B,26.78
+422,ES,Eversource Energy,25.35B,67.59
+423,ROL,"Rollins, Inc.",25.24B,52.46
+424,VRSK,"Verisk Analytics, Inc.",25.21B,182.75
+425,FOXA,Fox Corporation,25.15B,59.11
+426,NTRS,Northern Trust Corporation,25.08B,134.99
+427,MTD,Mettler-Toledo International Inc.,25.04B,"1,232.04"
+428,MTZ,"MasTec, Inc.",24.93B,316.01
+429,BG,Bunge Global SA,24.91B,128.72
+430,TW,Tradeweb Markets Inc.,24.78B,116.57
+431,STLD,"Steel Dynamics, Inc.",24.77B,170.97
+432,CFG,"Citizens Financial Group, Inc.",24.56B,57.78
+433,FTAI,FTAI Aviation Ltd.,24.52B,239.06
+434,CW,Curtiss-Wright Corporation,24.47B,663.56
+435,VIV,TelefÃ´nica Brasil S.A.,24.37B,15.25
+436,EL,The EstÃ©e Lauder Companies Inc.,24.32B,67.23
+437,WRB,W. R. Berkley Corporation,24.24B,64.74
+438,FIS,"Fidelity National Information Services, Inc.",24.12B,46.89
+439,FICO,Fair Isaac Corporation,24.03B,"1,011.06"
+440,DXCM,"DexCom, Inc.",23.96B,62.25
+441,CINF,Cincinnati Financial Corporation,23.92B,153.68
+442,GFS,GLOBALFOUNDRIES Inc.,23.87B,42.94
+443,ARES,Ares Management Corporation,23.85B,106.28
+444,FLEX,Flex Ltd.,23.83B,64.80
+445,TECK,Teck Resources Limited,23.81B,48.54
+446,LPLA,LPL Financial Holdings Inc.,23.78B,296.90
+447,TSCO,Tractor Supply Company,23.71B,44.87
+448,SQM,Sociedad QuÃ­mica y Minera de Chile S.A.,23.62B,82.70
+449,BCE,BCE Inc.,23.57B,25.25
+450,MKL,Markel Group Inc.,23.48B,"1,867.29"
+451,Q,"Qnity Electronics, Inc.",23.43B,111.76
+452,CMS,CMS Energy Corporation,23.35B,76.21
+453,RDDT,"Reddit, Inc.",23.28B,121.84
+454,PPG,"PPG Industries, Inc.",23.20B,103.82
+455,CRCL,"Circle Internet Group, Inc.",23.12B,93.66
+456,ASTS,"AST SpaceMobile, Inc.",23.02B,78.67
+457,ON,ON Semiconductor Corporation,22.99B,58.35
+458,UTHR,United Therapeutics Corporation,22.91B,522.83
+459,OMC,Omnicom Group Inc.,22.91B,73.82
+460,ZM,"Zoom Communications, Inc.",22.90B,77.71
+461,FCNCA,"First Citizens BancShares, Inc.",22.83B,"1,835.67"
+462,SYF,Synchrony Financial,22.72B,65.36
+463,FOX,Fox Corporation,22.71B,53.38
+464,VRSN,"VeriSign, Inc.",22.69B,247.48
+465,AVB,"AvalonBay Communities, Inc.",22.53B,160.81
+466,TSN,"Tyson Foods, Inc.",22.50B,63.92
+467,FWONA,Formula One Group,22.49B,75.09
+468,CHD,"Church & Dwight Co., Inc.",22.41B,94.69
+469,ULTA,"Ulta Beauty, Inc.",22.32B,510.34
+470,LEN,Lennar Corporation,22.29B,90.25
+471,AER,AerCap Holdings N.V.,22.26B,133.38
+472,NMR,"Nomura Holdings, Inc.",22.24B,7.58
+473,EQR,Equity Residential,22.18B,58.75
+474,UMC,United Microelectronics Corporation,22.15B,8.87
+475,XPO,"XPO, Inc.",22.15B,189.05
+476,DRI,"Darden Restaurants, Inc.",22.05B,192.49
+477,PHM,"PulteGroup, Inc.",22.05B,114.63
+478,NI,NiSource Inc.,22.00B,45.97
+479,PAAS,Pan American Silver Corp.,21.83B,51.70
+480,WIT,Wipro Limited,21.78B,2.080
+481,LH,Labcorp Holdings Inc.,21.77B,264.20
+482,BEP,Brookfield Renewable Partners L.P.,21.75B,31.74
+483,RF,Regions Financial Corporation,21.73B,25.16
+484,BRO,"Brown & Brown, Inc.",21.59B,63.43
+485,BNTX,BioNTech SE,21.53B,85.68
+486,STE,STERIS plc,21.52B,219.40
+487,DGX,Quest Diagnostics Incorporated,21.51B,195.51
+488,L,Loews Corporation,21.44B,104.06
+489,ZS,"Zscaler, Inc.",21.41B,133.16
+490,KEY,KeyCorp,21.19B,19.45
+491,ALB,Albemarle Corporation,21.15B,179.45
+492,DLTR,"Dollar Tree, Inc.",21.11B,107.00
+493,VLTO,Veralto Corporation,21.07B,85.03
+494,CF,"CF Industries Holdings, Inc.",20.97B,136.45
+495,WWD,"Woodward, Inc.",20.94B,351.17
+496,BSBR,Banco Santander (Brasil) S.A.,20.89B,5.61
+497,WSM,"Williams-Sonoma, Inc.",20.86B,175.29
+498,RCI,Rogers Communications Inc.,20.86B,38.49
+499,EFX,Equifax Inc.,20.67B,171.85
+500,SW,Smurfit Westrock Plc,20.66B,39.41
